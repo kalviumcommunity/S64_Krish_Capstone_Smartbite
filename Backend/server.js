@@ -3,6 +3,9 @@ import cors from 'cors'
 import { connectDB } from './config/db.js'
 import foodRouter from './routes/foodRoute.js'
 import 'dotenv/config';
+import aiRoute from './routes/aiRoute.js';
+app.use('/api/ai', aiRoute);
+
 
 const app = express()
 const port = process.env.PORT || 4000;
