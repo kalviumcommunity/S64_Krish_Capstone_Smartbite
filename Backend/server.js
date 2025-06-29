@@ -7,6 +7,9 @@ import aiRoute from './routes/aiRoute.js';
 app.use('/api/ai', aiRoute);
 import paymentRoutes from './routes/payment.js';
 app.use('/api/payment', paymentRoutes);
+import otpRoutes from './routes/otp.js';
+app.use('/api/otp', otpRoutes);
+
 
 
 const app = express()
