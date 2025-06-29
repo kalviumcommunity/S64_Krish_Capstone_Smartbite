@@ -4,44 +4,50 @@ import { connectDB } from './config/db.js'
 import foodRouter from './routes/foodRoute.js'
 import 'dotenv/config';
 import aiRoute from './routes/aiRoute.js';
-app.use('/api/ai', aiRoute);
 import paymentRoutes from './routes/payment.js';
-app.use('/api/payment', paymentRoutes);
 import otpRoutes from './routes/otp.js';
-app.use('/api/otp', otpRoutes);
 import rateLimit from 'express-rate-limit';
+import { createServer } from 'http';
+import { Server } from 'socket.io';
+import { setupSocketHandlers } from './socketHandlers.js'; 
+
+const app = express();
+const port = process.env.PORT || 4000;
 
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
+  windowMs: 15 * 60 * 1000,
   max: 100,
   message: 'Too many requests from this IP, try again after 15 minutes.'
 });
 
 app.use(limiter);
+app.use(express.json());
+app.use(cors());
 
-
-
-const app = express()
-const port = process.env.PORT || 4000;
-
-
-// middleware
-app.use(express.json())
-app.use(cors())
-
-//db connection
+// DB connect
 connectDB();
 
-// api endpoints
-app.use("/api/food",foodRouter)
-app.use("/images",express.static('uploads'))
+// Routes
+app.use('/api/food', foodRouter);
+app.use('/api/ai', aiRoute);
+app.use('/api/payment', paymentRoutes);
+app.use('/api/otp', otpRoutes);
+app.use('/images', express.static('uploads'));
 
+app.get("/", (req, res) => {
+  res.send("API working");
+});
 
-app.get("/",(req,res)=>{
-        res.send("API working")
-})
+// ✅ Setup HTTP + WebSocket
+const server = createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: "*"
+  }
+});
 
-app.listen(port,()=>{
-    console.log(`Server started on http://localhost:${port}`)
-})
+setupSocketHandlers(io); // ✅ Call handler
 
+server.listen(port, () => {
+  console.log(`🚀 Server + WebSocket running on http://localhost:${port}`);
+});
