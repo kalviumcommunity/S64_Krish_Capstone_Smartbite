@@ -5,6 +5,8 @@ import foodRouter from './routes/foodRoute.js'
 import 'dotenv/config';
 import aiRoute from './routes/aiRoute.js';
 app.use('/api/ai', aiRoute);
+import paymentRoutes from './routes/payment.js';
+app.use('/api/payment', paymentRoutes);
 
 
 const app = express()
