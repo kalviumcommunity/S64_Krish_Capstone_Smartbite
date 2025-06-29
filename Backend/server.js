@@ -9,6 +9,15 @@ import paymentRoutes from './routes/payment.js';
 app.use('/api/payment', paymentRoutes);
 import otpRoutes from './routes/otp.js';
 app.use('/api/otp', otpRoutes);
+import rateLimit from 'express-rate-limit';
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100,
+  message: 'Too many requests from this IP, try again after 15 minutes.'
+});
+
+app.use(limiter);
 
 
 
