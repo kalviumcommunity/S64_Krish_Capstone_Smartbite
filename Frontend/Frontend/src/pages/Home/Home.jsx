@@ -4,6 +4,10 @@ import Header from '../../components/Header/Header';
 import ExploreMenu from '../../components/ExploreMenu/ExploreMenu';
 import FoodDisplay from '../../components/FoodDisplay/FoodDisplay';
 import AppDownload from '../../components/AppDownload/AppDownload';
+import OTPAuth from '../../components/OTPAuth';
+// inside JSX:
+<OTPAuth />
+
 
 // ✅ Import AI Search Box Component
 import AISearchBox from '../../components/AISearchBox';
